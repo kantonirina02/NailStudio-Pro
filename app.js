@@ -1,4 +1,4 @@
-import { db, collection, addDoc } from './firebase.js';
+import { db, collection, addDoc, getDocs, query, orderBy } from './firebase.js';
 document.addEventListener("DOMContentLoaded", () => {
     const navbar = document.getElementById("mainNavbar");
     let lastScrollTop = 0;
@@ -142,5 +142,106 @@ if (reservationForm) {
             btnSubmit.innerHTML = originalBtnHtml;
             btnSubmit.disabled = false;
         }
+    });
+}
+
+// --- AFFICHAGE DYNAMIQUE DE LA GALERIE PUBLIQUE ---
+const publicGalleryGrid = document.getElementById('publicGalleryGrid');
+
+if (publicGalleryGrid) {
+    async function loadPublicGallery() {
+        try {
+            // On demande les images triées de la plus récente à la plus ancienne
+            const q = query(collection(db, "galerie"), orderBy("creeLe", "desc"));
+            const querySnapshot = await getDocs(q);
+
+            if (querySnapshot.empty) {
+                publicGalleryGrid.innerHTML = '<p class="text-center w-100 text-muted">Galerie en cours de création...</p>';
+                return;
+            }
+
+            publicGalleryGrid.innerHTML = ''; // On vide le spinner de chargement
+
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const div = document.createElement('div');
+                const categorieItem = data.categorie || 'all';
+                div.className = `masonry-item filter-item ${categorieItem}`;
+                div.setAttribute('data-category', categorieItem);
+
+                div.innerHTML = `
+                    <!-- NOUVEAU : Ajout de cursor-pointer et des attributs Bootstrap pour ouvrir la modale -->
+                    <div class="position-relative overflow-hidden rounded-4 shadow-sm gallery-card" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" data-img-url="${data.url}">
+                        <img src="${data.url}" class="w-100" alt="Réalisation NailBloom">
+                        <div class="gallery-overlay d-flex flex-column align-items-center justify-content-center text-white">
+                            <i class="bi bi-zoom-in fs-1 text-accent mb-2"></i>
+                            <span class="fw-medium">Voir la photo</span>
+                        </div>
+                    </div>
+                `;
+                publicGalleryGrid.appendChild(div);
+            });
+
+            // Note : le script des boutons de filtres (qui est plus haut dans app.js) 
+            // s'appliquera automatiquement sur ces nouveaux éléments.
+
+        } catch (error) {
+            console.error("Erreur lors du chargement de la galerie :", error);
+            publicGalleryGrid.innerHTML = '<p class="text-center w-100 text-danger">Impossible de charger la galerie.</p>';
+        }
+    }
+
+    // Lancement de la fonction au chargement de la page
+    loadPublicGallery();
+}
+
+// --- GESTION DE LA MODALE D'IMAGE (LIGHTBOX) ---
+const imageModal = document.getElementById('imageModal');
+if (imageModal) {
+    imageModal.addEventListener('show.bs.modal', function (event) {
+        // La carte sur laquelle on a cliqué
+        const triggerCard = event.relatedTarget;
+
+        // On récupère l'URL stockée dans l'attribut "data-img-url"
+        const imageUrl = triggerCard.getAttribute('data-img-url');
+
+        // On met à jour l'image dans la modale
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = imageUrl;
+    });
+}
+
+// --- GESTION DU FILTRAGE DE LA GALERIE (VERSION CORRIGÉE) ---
+const mesBoutonsFiltre = document.querySelectorAll('.filter-btn');
+
+if (mesBoutonsFiltre.length > 0) {
+    mesBoutonsFiltre.forEach(button => {
+        button.addEventListener('click', () => {
+            // 1. Visuel des boutons
+            mesBoutonsFiltre.forEach(btn => btn.classList.remove('active', 'btn-dark'));
+            mesBoutonsFiltre.forEach(btn => btn.classList.add('btn-outline-dark'));
+
+            button.classList.remove('btn-outline-dark');
+            button.classList.add('active', 'btn-dark');
+
+            // 2. On récupère le mot-clé du filtre (ex: 'semi')
+            const filterValue = button.getAttribute('data-filter');
+
+            // 3. On récupère TOUTES les photos générées par Firestore
+            const allGalleryItems = document.querySelectorAll('.filter-item');
+
+            // 4. On boucle sur chaque photo pour voir si on la garde ou si on la cache
+            allGalleryItems.forEach(item => {
+                const itemCategory = item.getAttribute('data-category');
+
+                if (filterValue === 'all' || filterValue === itemCategory) {
+                    // Si c'est 'all' ou que la catégorie correspond, on affiche
+                    item.classList.remove('d-none');
+                } else {
+                    // Sinon, on cache (classe Bootstrap d-none pour display: none)
+                    item.classList.add('d-none');
+                }
+            });
+        });
     });
 }

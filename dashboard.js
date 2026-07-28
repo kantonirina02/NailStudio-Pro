@@ -90,3 +90,124 @@ async function chargerReservations() {
             </tr>`;
     }
 }
+
+// --- NAVIGATION ENTRE LES VUES ---
+const navReservations = document.getElementById('navReservations');
+const navGalerie = document.getElementById('navGalerie');
+const viewReservations = document.getElementById('viewReservations');
+const viewGalerie = document.getElementById('viewGalerie');
+const pageTitle = document.getElementById('pageTitle');
+
+if (navReservations && navGalerie) {
+    navReservations.addEventListener('click', () => {
+        navReservations.classList.add('active');
+        navGalerie.classList.remove('active');
+        viewReservations.classList.remove('d-none');
+        viewGalerie.classList.add('d-none');
+        pageTitle.innerText = "Gestion des Rendez-vous";
+    });
+
+    navGalerie.addEventListener('click', () => {
+        navGalerie.classList.add('active');
+        navReservations.classList.remove('active');
+        viewGalerie.classList.remove('d-none');
+        viewReservations.classList.add('d-none');
+        pageTitle.innerText = "Gestion de la Galerie";
+        chargerGalerieAdmin();
+    });
+}
+
+// --- GESTION DE LA GALERIE (CLOUDINARY + FIRESTORE) ---
+import { addDoc } from './firebase.js'; // On s'assure d'avoir addDoc pour sauvegarder l'URL
+
+const photoCategory = document.getElementById('photoCategory');
+const btnUpload = document.getElementById('btnUpload');
+const photoInput = document.getElementById('photoInput');
+const uploadStatus = document.getElementById('uploadStatus');
+const adminGalleryGrid = document.getElementById('adminGalleryGrid');
+
+const CLOUD_NAME = "p2rylivd";
+const UPLOAD_PRESET = "cjh1trff";
+
+if (btnUpload) {
+    btnUpload.addEventListener('click', async () => {
+        const file = photoInput.files[0];
+        if (!file) return alert("Veuillez sélectionner une image.");
+
+        try {
+            btnUpload.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Envoi...';
+            btnUpload.disabled = true;
+
+            // 1. Envoi sur Cloudinary
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", UPLOAD_PRESET);
+
+            const cloudinaryRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+                method: "POST",
+                body: formData
+            });
+
+            const cloudinaryData = await cloudinaryRes.json();
+            const imageUrl = cloudinaryData.secure_url;
+
+            // 2. Sauvegarde de l'URL dans Firestore (Collection "galerie")
+            // On récupère la catégorie choisie
+            const categorieChoisie = photoCategory.value;
+
+            // Sauvegarde de l'URL et de la catégorie dans Firestore
+            await addDoc(collection(db, "galerie"), {
+                url: imageUrl,
+                categorie: categorieChoisie,
+                creeLe: new Date()
+            });
+
+            uploadStatus.classList.remove('d-none');
+            photoInput.value = "";
+            setTimeout(() => uploadStatus.classList.add('d-none'), 3000);
+            chargerGalerieAdmin();
+
+        } catch (error) {
+            console.error("Erreur d'upload :", error);
+            alert("Erreur lors de l'envoi de l'image.");
+        } finally {
+            btnUpload.innerHTML = '<i class="bi bi-upload me-2"></i> Envoyer';
+            btnUpload.disabled = false;
+        }
+    });
+}
+
+// Affichage des images
+async function chargerGalerieAdmin() {
+    if (!adminGalleryGrid) return;
+    adminGalleryGrid.innerHTML = '<div class="spinner-border text-secondary"></div>';
+
+    try {
+        const q = query(collection(db, "galerie"), orderBy("creeLe", "desc"));
+        const querySnapshot = await getDocs(q);
+
+        adminGalleryGrid.innerHTML = '';
+
+        if (querySnapshot.empty) {
+            adminGalleryGrid.innerHTML = '<p class="text-muted">Aucune photo dans la galerie.</p>';
+            return;
+        }
+
+        querySnapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            const div = document.createElement('div');
+            div.className = 'col-6 col-md-4 col-lg-3';
+            div.innerHTML = `
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 position-relative">
+                    <span class="badge bg-dark position-absolute top-0 start-0 m-2 z-1">${data.categorie || 'Autre'}</span>
+                    <img src="${data.url}" class="w-100 object-fit-cover" style="height: 150px;" alt="Réalisation">
+                </div>
+            `;
+            adminGalleryGrid.appendChild(div);
+        });
+
+    } catch (error) {
+        console.error("Erreur de chargement :", error);
+        adminGalleryGrid.innerHTML = '<p class="text-danger">Erreur de chargement.</p>';
+    }
+}
