@@ -23,3 +23,38 @@ document.addEventListener("DOMContentLoaded", () => {
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     });
 });
+
+// --- ANIMATION DES COMPTEURS ---
+const counters = document.querySelectorAll('.counter');
+const speed = 200; // Plus le chiffre est bas, plus c'est rapide
+
+const animateCounters = () => {
+    counters.forEach(counter => {
+        const updateCount = () => {
+            const target = +counter.getAttribute('data-target');
+            const count = +counter.innerText;
+            const increment = target / speed;
+
+            if (count < target) {
+                counter.innerText = Math.ceil(count + increment);
+                setTimeout(updateCount, 15);
+            } else {
+                counter.innerText = target;
+            }
+        };
+        updateCount();
+    });
+};
+
+// Intersection Observer pour déclencher l'animation au scroll
+const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+        animateCounters();
+        observer.disconnect(); // Arrête d'observer une fois l'animation jouée
+    }
+}, { threshold: 0.5 }); // Se déclenche quand 50% de la section est visible
+
+const statsSection = document.getElementById('avant-apres');
+if (statsSection) {
+    observer.observe(statsSection);
+}

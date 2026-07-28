@@ -165,3 +165,19 @@ h6 {
     color: var(--dark-color);
     border-color: var(--primary-color);
 }
+
+/* --- SECTION AVANT / APRÈS --- */
+.slider-container {
+    background-color: #f8f9fa;
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}
+
+/* Empêche l'image "Avant" de se déformer */
+.image-avant-fixe {
+    width: 200%;
+    /* Compense la largeur de 50% du parent */
+    max-width: none;
+}
