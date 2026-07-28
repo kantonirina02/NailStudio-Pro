@@ -1,0 +1,7 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Plus tard pour Firebase ou Node
+node_modules/
+.env
