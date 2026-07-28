@@ -1,6 +1,7 @@
 // Importation des modules Firebase officiels (via CDN)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyD4e_v9e4UwZ0n8oefaavLdR65ltUVskB4",
@@ -14,6 +15,7 @@ const firebaseConfig = {
 // Initialisation de l'application et de la base de données
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 // On exporte la base de données pour pouvoir l'utiliser dans app.js
-export { db, collection, addDoc };
+export { db, collection, addDoc, auth, signInWithEmailAndPassword };
