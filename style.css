@@ -291,3 +291,63 @@ h6 {
     background-color: var(--secondary-color);
     border: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
+
+/* --- SECTION RÉSERVATION & FOOTER --- */
+
+/* Animation du bouton Réserver au survol */
+.btn-hover-accent {
+    transition: all 0.3s ease;
+}
+
+.btn-hover-accent:hover {
+    background-color: var(--accent-color) !important;
+    border-color: var(--accent-color) !important;
+    color: var(--dark-color) !important;
+}
+
+/* Liens du footer au survol */
+.hover-accent:hover {
+    color: var(--accent-color) !important;
+}
+
+/* Bouton WhatsApp flottant (toujours visible) */
+.whatsapp-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #25D366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    z-index: 1000;
+    text-decoration: none;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    animation: float-whatsapp 3s ease-in-out infinite;
+}
+
+.whatsapp-btn:hover {
+    background-color: #128C7E;
+    color: white;
+    transform: scale(1.1);
+    animation-play-state: paused;
+}
+
+/* Animation douce pour WhatsApp (mouvement haut/bas) */
+@keyframes float-whatsapp {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}

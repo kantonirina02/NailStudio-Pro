@@ -452,6 +452,109 @@
         </div>
     </section>
 
+    <!-- SECTION RÉSERVATION -->
+    <section class="py-5 bg-primary-custom position-relative overflow-hidden" id="reservation">
+        <!-- Particules décoratives (pur CSS) -->
+        <div class="position-absolute top-0 start-0 w-100 h-100"
+            style="background-image: radial-gradient(#D4AF37 1px, transparent 1px); background-size: 50px 50px; opacity: 0.1;">
+        </div>
+
+        <div class="container py-5 position-relative z-1">
+            <div class="row align-items-center g-5">
+
+                <!-- Texte d'accroche -->
+                <div class="col-lg-5 text-dark">
+                    <h2 class="display-5 fw-bold mb-4">Prête à prendre<br>soin de vous ?</h2>
+                    <p class="lead mb-0 fs-6 w-75">Réservez votre rendez-vous en quelques clics et offrez à vos ongles
+                        l'attention qu'ils méritent.</p>
+                </div>
+
+                <!-- Formulaire de réservation rapide -->
+                <div class="col-lg-7">
+                    <div class="bg-white p-4 p-md-5 rounded-4 shadow">
+                        <form>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-4">
+                                    <label class="form-label text-muted small">Prestation</label>
+                                    <select class="form-select border-0 bg-light"
+                                        aria-label="Sélectionner une prestation">
+                                        <option selected>Sélectionner...</option>
+                                        <option value="1">Pose de Gel</option>
+                                        <option value="2">Semi-permanent</option>
+                                        <option value="3">Babyboomer</option>
+                                        <option value="4">Nail Art</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label text-muted small">Date</label>
+                                    <input type="date" class="form-control border-0 bg-light">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label text-muted small">Heure</label>
+                                    <select class="form-select border-0 bg-light">
+                                        <option selected>Sélectionner...</option>
+                                        <option value="10">10:00</option>
+                                        <option value="11">11:00</option>
+                                        <option value="14">14:00</option>
+                                        <option value="15">15:00</option>
+                                        <option value="16">16:00</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button type="submit"
+                                class="btn btn-dark w-100 py-3 rounded-pill fw-medium mb-4 d-flex justify-content-between align-items-center px-4 btn-hover-accent">
+                                <span>Réserver maintenant</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+
+                            <div class="d-flex flex-wrap justify-content-between text-muted small gap-2">
+                                <span><i class="bi bi-check-circle text-accent me-1"></i> Confirmation immédiate</span>
+                                <span><i class="bi bi-chat-dots text-accent me-1"></i> Rappel par SMS</span>
+                                <span><i class="bi bi-credit-card text-accent me-1"></i> Paiement sur place</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-white py-4 border-top">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+
+            <!-- Logo -->
+            <div class="font-heading fs-5 fw-bold">
+                <span class="text-accent">Nail</span>Bloom
+            </div>
+
+            <!-- Copyright -->
+            <div class="text-muted small">
+                © 2026 NailBloom - Tous droits réservés
+            </div>
+
+            <!-- Réseaux Sociaux -->
+            <div class="d-flex gap-3">
+                <a href="#" class="text-dark"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="text-dark"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="text-dark"><i class="bi bi-tiktok"></i></a>
+            </div>
+
+            <!-- Liens légaux -->
+            <div class="d-flex gap-3 small">
+                <a href="#" class="text-muted text-decoration-none hover-accent">Mentions légales</a>
+                <a href="#" class="text-muted text-decoration-none hover-accent">Politique de confidentialité</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOUTON WHATSAPP FLOTTANT -->
+    <a href="https://wa.me/33600000000" class="whatsapp-btn shadow-lg" target="_blank" rel="noopener noreferrer">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
