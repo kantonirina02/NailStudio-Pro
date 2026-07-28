@@ -263,3 +263,31 @@ h6 {
 .hide-item {
     display: none !important;
 }
+
+/* --- SECTION AVIS CLIENTES --- */
+.scroll-container {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    /* Comportement tactile fluide sur mobile */
+    scroll-snap-type: x mandatory;
+
+    /* Masquer la scrollbar pour faire plus propre */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari and Opera */
+}
+
+.avis-card {
+    /* Largeur fixe pour que les cartes ne s'écrasent pas */
+    width: 350px;
+    /* Force la carte à s'aligner au centre lors du défilement */
+    scroll-snap-align: center;
+    background-color: var(--secondary-color);
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}

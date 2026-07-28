@@ -82,3 +82,19 @@ filterButtons.forEach(button => {
         });
     });
 });
+
+// --- DÉFILEMENT AUTO DES AVIS CLIENTES ---
+const avisContainer = document.getElementById('avisContainer');
+
+if (avisContainer) {
+    setInterval(() => {
+        // Si on a atteint la fin du conteneur (avec une petite marge de tolérance de 10px)
+        if (avisContainer.scrollLeft >= (avisContainer.scrollWidth - avisContainer.clientWidth - 10)) {
+            // Retour au début
+            avisContainer.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+            // Sinon, on scrolle vers la droite de 374px (350px de carte + 24px de gap)
+            avisContainer.scrollBy({ left: 374, behavior: 'smooth' });
+        }
+    }, 4000); // Défile toutes les 4 secondes
+}
