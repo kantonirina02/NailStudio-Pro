@@ -1,0 +1,42 @@
+/* --- VARIABLES GLOBALES --- */
+:root {
+    --primary-color: #F6E3E6;
+    /* Rose Poudré */
+    --secondary-color: #FDFBF7;
+    /* Blanc Cassé */
+    --accent-color: #D4AF37;
+    /* Doré */
+    --dark-color: #2C2C2C;
+    /* Noir/Gris foncé */
+
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Poppins', sans-serif;
+}
+
+/* --- RESET & BASES --- */
+body {
+    font-family: var(--font-body);
+    color: var(--dark-color);
+    background-color: var(--secondary-color);
+    overflow-x: hidden;
+    /* Empêche le scroll horizontal accidentel */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+}
+
+/* Classes utilitaires pour les couleurs (pratique avec Bootstrap) */
+.text-accent {
+    color: var(--accent-color);
+}
+
+.bg-primary-custom {
+    background-color: var(--primary-color);
+}
