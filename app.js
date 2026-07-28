@@ -58,3 +58,27 @@ const statsSection = document.getElementById('avant-apres');
 if (statsSection) {
     observer.observe(statsSection);
 }
+
+// --- SYSTÈME DE FILTRES DE LA GALERIE ---
+const filterButtons = document.querySelectorAll('.btn-filter');
+const filterItems = document.querySelectorAll('.filter-item');
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // 1. Gérer l'apparence des boutons (actif/inactif)
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        // 2. Récupérer la catégorie cliquée
+        const filterValue = button.getAttribute('data-filter');
+
+        // 3. Afficher ou masquer les images
+        filterItems.forEach(item => {
+            if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                item.classList.remove('hide-item');
+            } else {
+                item.classList.add('hide-item');
+            }
+        });
+    });
+});
