@@ -1,3 +1,4 @@
+import { db, collection, addDoc } from './firebase.js';
 document.addEventListener("DOMContentLoaded", () => {
     const navbar = document.getElementById("mainNavbar");
     let lastScrollTop = 0;
@@ -97,4 +98,49 @@ if (avisContainer) {
             avisContainer.scrollBy({ left: 374, behavior: 'smooth' });
         }
     }, 4000); // Défile toutes les 4 secondes
+}
+
+// --- GESTION DU FORMULAIRE DE RÉSERVATION (FIREBASE) ---
+const reservationForm = document.getElementById('reservationForm');
+
+if (reservationForm) {
+    reservationForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Empêche le rechargement de la page au clic
+
+        // 1. Récupération des valeurs saisies
+        const prestation = document.getElementById('prestationSelect').value;
+        const date = document.getElementById('dateInput').value;
+        const heure = document.getElementById('heureSelect').value;
+
+        // 2. Ciblage du bouton pour l'animation de chargement
+        const btnSubmit = reservationForm.querySelector('button[type="submit"]');
+        const originalBtnHtml = btnSubmit.innerHTML;
+
+        try {
+            // Modification visuelle du bouton pendant l'envoi
+            btnSubmit.innerHTML = '<span>Envoi en cours...</span> <span class="spinner-border spinner-border-sm" role="status"></span>';
+            btnSubmit.disabled = true;
+
+            // 3. Envoi des données vers la collection "reservations" de Firestore
+            await addDoc(collection(db, "reservations"), {
+                prestation: prestation,
+                date: date,
+                heure: heure,
+                statut: "En attente",
+                creeLe: new Date() // Horodatage de la création
+            });
+
+            // 4. Succès : on prévient l'utilisateur et on vide le formulaire
+            alert(`Génial ! La réservation pour le ${date} à ${heure} a bien été enregistrée.`);
+            reservationForm.reset();
+
+        } catch (error) {
+            console.error("Erreur lors de la réservation : ", error);
+            alert("Une erreur est survenue lors de la connexion au serveur. Veuillez réessayer.");
+        } finally {
+            // Quoi qu'il arrive (succès ou erreur), on remet le bouton à son état normal
+            btnSubmit.innerHTML = originalBtnHtml;
+            btnSubmit.disabled = false;
+        }
+    });
 }

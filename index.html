@@ -472,32 +472,31 @@
                 <!-- Formulaire de réservation rapide -->
                 <div class="col-lg-7">
                     <div class="bg-white p-4 p-md-5 rounded-4 shadow">
-                        <form>
+                        <form id="reservationForm">
                             <div class="row g-3 mb-4">
                                 <div class="col-md-4">
                                     <label class="form-label text-muted small">Prestation</label>
-                                    <select class="form-select border-0 bg-light"
-                                        aria-label="Sélectionner une prestation">
-                                        <option selected>Sélectionner...</option>
-                                        <option value="1">Pose de Gel</option>
-                                        <option value="2">Semi-permanent</option>
-                                        <option value="3">Babyboomer</option>
-                                        <option value="4">Nail Art</option>
+                                    <select id="prestationSelect" class="form-select border-0 bg-light" required>
+                                        <option value="" selected>Sélectionner...</option>
+                                        <option value="Pose de Gel">Pose de Gel</option>
+                                        <option value="Semi-permanent">Semi-permanent</option>
+                                        <option value="Babyboomer">Babyboomer</option>
+                                        <option value="Nail Art">Nail Art</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label text-muted small">Date</label>
-                                    <input type="date" class="form-control border-0 bg-light">
+                                    <input type="date" id="dateInput" class="form-control border-0 bg-light" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label text-muted small">Heure</label>
-                                    <select class="form-select border-0 bg-light">
-                                        <option selected>Sélectionner...</option>
-                                        <option value="10">10:00</option>
-                                        <option value="11">11:00</option>
-                                        <option value="14">14:00</option>
-                                        <option value="15">15:00</option>
-                                        <option value="16">16:00</option>
+                                    <select id="heureSelect" class="form-select border-0 bg-light" required>
+                                        <option value="" selected>Sélectionner...</option>
+                                        <option value="10:00">10:00</option>
+                                        <option value="11:00">11:00</option>
+                                        <option value="14:00">14:00</option>
+                                        <option value="15:00">15:00</option>
+                                        <option value="16:00">16:00</option>
                                     </select>
                                 </div>
                             </div>
